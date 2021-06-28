@@ -1,6 +1,8 @@
 import logoImg from '../assets/logo.svg';
 import { Button } from '../components/Button';
 
+import '../styles/room.scss';
+
 export function Room(){
     return (
       <div id="page-room">
