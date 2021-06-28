@@ -3,14 +3,14 @@
     border-radius: 8px;
     overflow: hidden;
 
-    background: #fff;
-    border: 1px solid #835afd;
+    background: #202833;
+    border: 1px solid #243347;
     cursor: pointer;
 
     display: flex;
 
     div{
-        background: #835afd;
+        background: #243347;
         padding: 0 12px;
         display: flex;
         justify-content: center;
@@ -26,5 +26,6 @@
         width: 240px;
         font-size: 14px;
         font-weight: 500;
+        color: #fff;
     }
 }
