@@ -12,6 +12,7 @@ import { useRoom } from '../hooks/useRoom';
 
 import '../styles/room.scss';
 import { database } from '../services/firebase';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -22,13 +23,18 @@ type RoomParams = {
 
 
 export function AdminRoom() {
-    // const { user } = useAuth();
+    const history = useHistory()
     const params = useParams<RoomParams>();
-    // const [newQuestion, setNewQuestion] = useState('')
     const roomId = params.id;
-    
     const { title, questions } = useRoom(roomId)
 
+    async function handleEndRoom() {
+        await database.ref(`rooms/${roomId}`).update({
+            endedAt: new Date(),
+        })
+
+        history.push('/');
+    }
     
     // async function handleSendQuestion(event: FormEvent) {
     //     event.preventDefault()
@@ -67,7 +73,7 @@ export function AdminRoom() {
                     <img src={logoImg} alt="Letmeask" />
                     <div>
                     <RoomCode code={params.id} />
-                    <Button isOutlined>Encerrar Sala</Button>
+                    <Button isOutlined onClick={handleEndRoom}>Encerrar Sala</Button>
                     </div>
                 </div>
             </header>
