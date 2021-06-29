@@ -18,6 +18,7 @@ This project was developed with the following technologies:
 
 - [React](https://reactjs.org)
 - [Firebase](https://firebase.google.com/?hl=pt)
+- [Typescript](https://www.typescriptlang.org/)
 - [Sass](https://sass-lang.com/)
 
 ## 💻 Project
