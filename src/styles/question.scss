@@ -12,6 +12,30 @@
         color: #fff;
     }
 
+    &.highlited{
+        background: #2E415A;
+        border: solid 1px #ec0b43;
+    }
+
+    &.answered{
+        background: #1a212b;
+        border: none;
+        p{
+            color: #2f3a49;
+        }
+        footer{
+            .user-info{
+                img{
+                    filter: grayscale(100);
+                }
+                span{
+                    color: #2f3a49;
+                }
+            }
+        }
+        
+    }
+
     footer{
         display: flex;
         justify-content: space-between;
@@ -32,6 +56,11 @@
                 color: #ec0b43;
                 font-size: 14px;
             }
+        }
+
+        > div{
+            display: flex;
+            gap: 15px;
         }
 
         button{

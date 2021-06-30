@@ -5,6 +5,8 @@ import Modal from 'react-modal';
 
 import logoImg from '../assets/logo.svg';
 import deleteImg from '../assets/delete.svg';
+import checkImg from '../assets/check.svg';
+import answerImg from '../assets/answer.svg';
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
@@ -64,9 +66,22 @@ export function AdminRoom() {
     // }
 
     async function handleDeleteQuestionConfirm(questionId: string) {
-            await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
-            setIsModalVisible(undefined)
+        await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
+        setIsModalVisible(undefined)
     }
+
+    async function handleCheckQuestionAsAnswered(questionId: string) {
+        await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+            isAnswer: true
+        })
+    }
+
+    async function handleHighLightQuestion(questionId: string) {
+        await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+            isHighlighted: true
+        })
+    }
+
 
     return (
         <div id="page-room">
@@ -75,20 +90,20 @@ export function AdminRoom() {
                     <img src={logoImg} alt="Letmeask" />
                     <div>
                         <RoomCode code={params.id} />
-                        <Button isOutlined onClick={() => {setIsModal2Visible(true)}}>Encerrar Sala</Button>
+                        <Button isOutlined onClick={() => { setIsModal2Visible(true) }}>Encerrar Sala</Button>
                         <Modal
-                                    isOpen={isModal2Visible}
-                                    onRequestClose={() => setIsModal2Visible(false)}
-                                    className="modal"
-                                    overlayClassName="modal-overlay"
-                                >
-                                    <p>Encerrar sala</p>
-                                    <span>Tem certeza que você deseja encerrar esta sala?</span>
-                                    <div>
-                                        <Button onClick={() => setIsModal2Visible(false)}>Cancelar</Button>
-                                        <Button isOutlined onClick={handleEndRoom}>Sim, encerrar</Button>
-                                    </div>
-                                </Modal>
+                            isOpen={isModal2Visible}
+                            onRequestClose={() => setIsModal2Visible(false)}
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                        >
+                            <p>Encerrar sala</p>
+                            <span>Tem certeza que você deseja encerrar esta sala?</span>
+                            <div>
+                                <Button onClick={() => setIsModal2Visible(false)}>Cancelar</Button>
+                                <Button isOutlined onClick={handleEndRoom}>Sim, encerrar</Button>
+                            </div>
+                        </Modal>
                     </div>
                 </div>
             </header>
@@ -104,7 +119,19 @@ export function AdminRoom() {
                                 key={question.id}
                                 content={question.content}
                                 author={question.author}
+                                isAnswer={question.isAnswer}
+                                isHighlighted={question.isHighlighted}
                             >
+                                {!question.isAnswer && (
+                                    <>
+                                        <button type="button" onClick={() => handleCheckQuestionAsAnswered(question.id)}>
+                                            <img src={checkImg} alt="Marcar pergunta como respondida" />
+                                        </button>
+                                        <button type="button" onClick={() => handleHighLightQuestion(question.id)}>
+                                            <img src={answerImg} alt="Dar destaque a pergunta" />
+                                        </button>
+                                    </>
+                                )}
                                 <button type="button" onClick={() => setIsModalVisible(question.id)}>
                                     <img src={deleteImg} alt="Remover Pergunta" />
                                 </button>
@@ -118,7 +145,7 @@ export function AdminRoom() {
                                     <span>Tem certeza que você deseja excluir esta pergunta??</span>
                                     <div>
                                         <Button onClick={() => setIsModalVisible(undefined)}>Cancelar</Button>
-                                        <Button isOutlined onClick={() => {handleDeleteQuestionConfirm(question.id)}}>Sim, excluir</Button>
+                                        <Button isOutlined onClick={() => { handleDeleteQuestionConfirm(question.id) }}>Sim, excluir</Button>
                                     </div>
                                 </Modal>
                             </Question>

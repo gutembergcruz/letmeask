@@ -95,9 +95,11 @@ export function Room() {
                     {questions.map(question => {
                         return (
                             <Question
-                                key={question.id}
-                                content={question.content}
-                                author={question.author}
+                            key={question.id}
+                            content={question.content}
+                            author={question.author}
+                            isAnswer={question.isAnswer}
+                            isHighlighted={question.isHighlighted}
                             >
                                 <button className={`like-button ${question.likeId ? 'liked' : ''}`} type="button" aria-label="Marcar como gostei" onClick={() => handleLikeQuestion(question.id, question.likeId)}>
                                     { question.likeCount > 0 && <span>{question.likeCount}</span> }
