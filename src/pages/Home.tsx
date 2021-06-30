@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import Modal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 
 import illustrationImg from '../assets/illustration.svg';
@@ -14,6 +15,8 @@ export function Home() {
     const history = useHistory();
     const { user, signInWithGoogle } = useAuth()
     const [roomCode, setRoomCode] = useState('')
+    const [modalClosed, setModalClosed] = useState(false)
+    const [modalDont, setModalDont] = useState(false)
 
     async function handleCreateRoom(){
         if (!user) {
@@ -33,12 +36,12 @@ export function Home() {
         const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
         if(!roomRef.exists()){
-            alert('Sala não existente')
+            setModalDont(true)
             return
         }
 
         if(roomRef.val().endedAt){
-            alert('Room already closed.')
+            setModalClosed(true)
             return
         }
 
@@ -73,6 +76,14 @@ export function Home() {
                     </form>
                 </div>
             </main>
+            <Modal className="modal" overlayClassName="modal-overlay" onRequestClose={() => setModalClosed(false)} isOpen={modalClosed}>
+                <p>Falha!</p>
+                <span>Esta sala já foi encerrada.</span>
+            </Modal>
+            <Modal className="modal" overlayClassName="modal-overlay" onRequestClose={() => setModalDont(false)} isOpen={modalDont}>
+                <p>Falha!</p>
+                <span>Sala não existente.</span>
+            </Modal>
         </div>
     )
 }
